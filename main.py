@@ -25,21 +25,34 @@ def main():
     df
 
 
-    filter_by_avg(pd, df['exchange_rate'].mean())
+    jerk.filter_by_avg(pd, df['exchange_rate'].mean())
     
 
-    sorted_by_dates(pd, '2022-9-15', '2020-02-02')
+    jerk.sorted_by_dates(pd, '2022-9-15', '2020-02-02')
 
-    sorted_by_month(pd, 2)
-    df['day'] = pd.to_datetime(df['day'], format='%Y-%m-%d')
-    pf = df.loc[(df['day'] > '1998-01-01')]
-    pf
-    pf.plot(x = 'day', y = 'exchange_rate')
-    plt.ylabel('Exchange rate')
-    plt.xlabel('Day')
-    plt.title('Сurrency exchange rate changes over all time')
-    plt.show()
-    draw_weeks_stat(df, 12)
+    jerk.sorted_by_month(pd, 2)
+    def draw_weeks_stat(pd: pd.DataFrame, month: int) -> None:
+     df['month'] = df['day'].dt.month
+     sf = df[df['month'] == month]
+
+
+     x = sf['exchange_rate']
+
+     y1 = sf['exchange_rate'] - sf['exchange_rate'].mean()
+     y2 = sf['exchange_rate'] - sf ['exchange_rate'].median()
+
+
+     plt.ylabel('Exchange rate')
+     plt.xlabel('Day')
+     plt.plot(x, color='blue', linestyle='-.', linewidth=1, label='Exchange rate')
+     plt.plot(y1, color='green', linestyle='-', linewidth=1, label='Deviation from avg')
+     plt.plot(y2, color='red', linestyle='--', linewidth=1, label='Deviation from median')
+     plt.legend()
+     plt.title('Сurrency exchange rate changes over all time')
+     plt.show()
+
+jerk.draw_weeks_stat(df, 12)
+
 if  == "__main__":
     main()
 
